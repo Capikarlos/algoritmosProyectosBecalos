@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Planificador de Viajes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Planificador de Viajes</h1> 
+    <p>Registra tus viajes y consulta el itinerario:</p>
+
+    <form id="formRegistro">
+        <label for="destino">Destino:</label>
+        <input type="text" id="destino" name="destino" placeholder="Ej: Paris, Londres o New York" required>
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+
+        <label for="transporte">Transporte:</label>
+        <select id="transporte" name="transporte" required>
+            <option value="">Selecciona</option>
+            <option value="Avión">Avión</option>
+            <option value="Tren">Tren</option>
+        </select>
+
+        <button type="submit">Registrar Viaje</button>
+    </form>
+
+    <h2>Itinerario</h2>
+    <div id="itinerario">
+        <!-- Aquí se mostrarán los viajes -->
+    </div>
+
+    <script src="viajes.js"></script>
+</body>
+
+</html>
+
+
