@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Lista de Compras</h1> 
+    <p>Administra tus productos agregándolos, eliminándolos y revisando la lista:</p>
+
+    <!-- Formulario para agregar productos -->
+    <form id="formProducto">
+        <label class="producto">Producto:</label>
+        <input type="text" id="producto" name="producto" placeholder="Ej: Leche, Pan, Huevos" required>
+
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <h2>Productos en la Lista</h2>
+    <div id="lista">
+        <!-- Aquí se mostrarán los productos -->
+    </div>
+
+    <script src="lista.js"></script>
+</body>
+</html>
