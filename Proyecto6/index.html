@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto Recursión y Backtracking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Proyecto Recursión y Backtracking</h1>
+    <p>Busca un regalo específico en una lista usando recursión:</p>
+
+    <form id="formRegalos">
+        <label for="listaRegalos">Lista de regalos (separa con comas):</label>
+        <input type="text" id="listaRegalos" name="listaRegalos" placeholder="Ej: peluche, libro, videojuego, puzzle" required>
+
+        <label for="regaloBuscado">Regalo a buscar:</label>
+        <input type="text" id="regaloBuscado" name="regaloBuscado" placeholder="Ej: puzzle" required>
+
+        <button type="submit">Buscar Regalo</button>
+    </form>
+
+    <h2>Resultado</h2>
+    <div id="resultado">
+        <!-- Aquí se mostrará el mensaje de posición o de no encontrado -->
+    </div>
+
+    <script src="recursion.js"></script>
+</body>
+</html>
