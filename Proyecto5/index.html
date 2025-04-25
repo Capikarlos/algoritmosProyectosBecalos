@@ -2,24 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Proyecto Algoritmo de Dos Punteros</title>
+    <title>Proyecto Algoritmo Sliding Window</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Proyecto Algoritmo de Dos Punteros</h1>
-    <p>Encuentra el primer par de invitados consecutivos cuyos nombres empiecen con la misma inicial:</p>
+    <h1>Proyecto 5</h1>
+    <p>Encuentra la palabra más larga en un texto</p>
 
-    <form id="formInvitados">
-        <label for="lista">Lista de invitados (separa con comas):</label>
-        <input type="text" id="lista" name="lista" placeholder="Ej: Ana, Carlos, Cecilia, Daniel" required>
-        <button type="submit">Buscar Pareja</button>
+    <form id="formTexto">
+        <label for="textoUsuario">Ingresa tu párrafo:</label>
+        <textarea id="textoUsuario" name="textoUsuario" rows="4" placeholder="Escribe aquí tu párrafo…" required></textarea>
+        <button type="submit">Buscar Palabra Más Larga</button>
     </form>
 
     <h2>Resultado</h2>
     <div id="resultado">
-        <!-- Aquí se mostrará el par encontrado o mensaje -->
+        <!-- Aquí se mostrará la palabra más larga -->
     </div>
 
-    <script src="invitados.js"></script>
+    <script src="sliding.js"></script>
 </body>
 </html>
