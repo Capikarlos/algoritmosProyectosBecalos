@@ -37,7 +37,7 @@ export const getRecipes = () => [
         pasos: "Tritura el aguacate y mezcla con los demás ingredientes hasta lograr una textura uniforme.",
         categoria: "Aperitivo",
         tiempo: 10,
-        imagen: ""
+        imagen: "https://www.allrecipes.com/thmb/FOHqtfrZVg0WAMdkFE3bnp7SNO4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-RM-14064-easy-guacamole-ddmfs-3x4-9e4a1eb1bb34421a99db675b53a29e53.jpg"
     },
     {
         nombre: "Paella Valenciana",
@@ -45,7 +45,7 @@ export const getRecipes = () => [
         pasos: "Cocina en paellera el arroz con los ingredientes y caldo hasta que se evapore el líquido.",
         categoria: "Comida",
         tiempo: 50,
-        imagen: ""
+        imagen: "https://cuidateplus.marca.com/sites/default/files/cms/paella-valenciana-receta.jpg"
     },
     {
         nombre: "Tarta de Chocolate Casera",
@@ -53,7 +53,7 @@ export const getRecipes = () => [
         pasos: "Mezcla los ingredientes, hornea la masa y deja enfriar antes de servir.",
         categoria: "Postre",
         tiempo: 60,
-        imagen: ""
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVIps3Ty7cC8_LZXXKhDsEEV4y-D5yOvAwJg&s"
     },
     {
         nombre: "Sushi Variado",
@@ -61,7 +61,7 @@ export const getRecipes = () => [
         pasos: "Prepara el arroz, corta el pescado y vegetales, enrolla en alga nori y sirve con salsa.",
         categoria: "Comida japonesa",
         tiempo: 30,
-        imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/640px-Sushi_platter.jpg"
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4GF0_sBvT1sLuIuVZ0Oo2XjeIQW9bF5mCtg&s"
     },
     {
         nombre: "Pasta al Pesto",
@@ -69,7 +69,7 @@ export const getRecipes = () => [
         pasos: "Licúa albahaca, piñones, parmesano y ajo, mezcla con la pasta cocida.",
         categoria: "Pasta",
         tiempo: 25,
-        imagen: ""
+        imagen: "https://i.ytimg.com/vi/vuN6VSqhB6E/maxresdefault.jpg"
     },
     {
         nombre: "Chili con Carne",
@@ -77,7 +77,7 @@ export const getRecipes = () => [
         pasos: "Cocina la carne con cebolla, agrega tomate, frijoles y chile, deja hervir.",
         categoria: "Comida tex-mex",
         tiempo: 45,
-        imagen: ""
+        imagen: "https://www.goya.com/wp-content/uploads/2023/10/wholesome-bean-chili.jpg"
     },
     {
         nombre: "Brownies",
@@ -85,7 +85,7 @@ export const getRecipes = () => [
         pasos: "Derrite el chocolate y mantequilla, mezcla con los otros ingredientes, hornea.",
         categoria: "Postre",
         tiempo: 35,
-        imagen: ""
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCeFM_CwiNDUlQtldKfwyGQcc8Jgu0jFT5Vg&s"
     },
     {
         nombre: "Gazpacho",
@@ -93,7 +93,7 @@ export const getRecipes = () => [
         pasos: "Licúa todos los ingredientes y refrigera antes de servir.",
         categoria: "Sopa fría",
         tiempo: 15,
-        imagen: ""
+        imagen: "https://www.conasi.eu/blog/wp-content/uploads/2016/06/gazpacho-1.jpg"
     },
     {
         nombre: "Pad Thai",
@@ -101,7 +101,7 @@ export const getRecipes = () => [
         pasos: "Saltea los ingredientes con salsa de tamarindo y mezcla con los fideos.",
         categoria: "Comida tailandesa",
         tiempo: 25,
-        imagen: ""
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTATgCcGxw3G13fdVl7THrzI7ubhlxTdpSFDw&s"
     },
     {
         nombre: "Falafel",
@@ -109,7 +109,7 @@ export const getRecipes = () => [
         pasos: "Tritura los garbanzos con especias, forma bolas y fríe hasta dorar.",
         categoria: "Aperitivo",
         tiempo: 30,
-        imagen: ""
+        imagen: "https://d36fw6y2wq3bat.cloudfront.net/recipes/falafel-en-freidora-de-aire/900/falafel-en-freidora-de-aire_version_1693540930.jpg"
     },
     {
         nombre: "Crepas",
@@ -117,6 +117,6 @@ export const getRecipes = () => [
         pasos: "Mezcla los ingredientes, cocina en sartén delgada y rellena al gusto.",
         categoria: "Postre",
         tiempo: 20,
-        imagen: "https://www.google.com/imgres?q=Crepas&imgurl=https%3A%2F%2Fi.blogs.es%2Fb45e35%2Fcomo-hacer-masa-para-crepas-3-%2F1366_2000.jpg&imgrefurl=https%3A%2F%2Fwww.directoalpaladar.com.mx%2Fpostres%2Fcomo-hacer-masa-para-crepas-muy-ligeras-finitas-jugosas-ideal-para-hacer-crepas-dulces-saladas&docid=4ahccsEOTxQywM&tbnid=CuSJncqrv4X3VM&vet=12ahUKEwj24vP02PSMAxWhG9AFHWYaHqEQM3oECGIQAA..i&w=1366&h=1127&hcb=2&ved=2ahUKEwj24vP02PSMAxWhG9AFHWYaHqEQM3oECGIQAA"
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQdyxtqipw0WM6la2yQR9S8zAPHpytii7cIw&s"
     }
 ];
