@@ -1,3 +1,5 @@
+// main.js
+
 // Importamos recetas desde un archivo externo simulado
 import { getRecipes } from "./services/recipes.js";
 
@@ -5,49 +7,104 @@ import { getRecipes } from "./services/recipes.js";
 const recetas = Array.isArray(getRecipes()) ? getRecipes() : [];
 
 // Referencias a elementos del DOM
-const input = document.getElementById("ingredient-input");
-const recipesContainer = document.getElementById("recipes");
-const sortSelect = document.getElementById("sort");
-const suggestionBtn = document.getElementById("suggestion-btn");
+const entradaIngrediente = document.getElementById("ingredient-input");
+const contenedorRecetas    = document.getElementById("recipes");
+const seleccionOrden       = document.getElementById("sort");
+const botonSugerencia      = document.getElementById("suggestion-btn");
 
 // Variables globales para autocompletado y análisis
-let currentSuggestionIndex = -1;
-let currentSuggestions = [];
-let historialIngredientes = [];
+let indiceSugerenciaActual = -1;
+let sugerenciasActuales    = [];
+let historialIngredientes   = [];
 
+// =============================================
+// UTIL: Búsqueda de subcadena manual (carácter a carácter)
+// =============================================
+function contieneSubcadena(texto, subcadena) {
+    const longitudTexto     = texto.length;
+    const longitudSubcadena = subcadena.length;
+    for (let posInicio = 0; posInicio <= longitudTexto - longitudSubcadena; posInicio++) {
+        let pos = 0;
+        while (pos < longitudSubcadena && texto[posInicio + pos] === subcadena[pos]) {
+            pos++;
+        }
+        if (pos === longitudSubcadena) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// =============================================
+// UTIL: Merge Sort genérico
+// =============================================
+function ordenarMezcla(arreglo, funcionComparacion) {
+    if (arreglo.length <= 1) return arreglo;
+    const puntoMedio     = Math.floor(arreglo.length / 2);
+    const parteIzquierda = ordenarMezcla(arreglo.slice(0, puntoMedio), funcionComparacion);
+    const parteDerecha   = ordenarMezcla(arreglo.slice(puntoMedio), funcionComparacion);
+
+    const arregloOrdenado = [];
+    let indiceIzq = 0;
+    let indiceDer = 0;
+
+    while (indiceIzq < parteIzquierda.length && indiceDer < parteDerecha.length) {
+        if (funcionComparacion(parteIzquierda[indiceIzq], parteDerecha[indiceDer]) <= 0) {
+            arregloOrdenado.push(parteIzquierda[indiceIzq]);
+            indiceIzq++;
+        } else {
+            arregloOrdenado.push(parteDerecha[indiceDer]);
+            indiceDer++;
+        }
+    }
+    return arregloOrdenado
+        .concat(parteIzquierda.slice(indiceIzq))
+        .concat(parteDerecha.slice(indiceDer));
+}
+
+// =============================================
+// UTIL: Encontrar receta de menor tiempo (Greedy simple)
+// =============================================
+function encontrarRecetaMasRapida(listadoRecetas) {
+    let mejorReceta = listadoRecetas[0];
+    for (let i = 1; i < listadoRecetas.length; i++) {
+        if (listadoRecetas[i].tiempo < mejorReceta.tiempo) {
+            mejorReceta = listadoRecetas[i];
+        }
+    }
+    return mejorReceta;
+}
 
 // =============================================
 // FUNCIÓN: Mostrar recetas en pantalla
 // =============================================
 function renderRecetas(lista) {
-    recipesContainer.innerHTML = ""; // Limpiamos el contenedor
+    contenedorRecetas.innerHTML = ""; // Limpiamos el contenedor
 
     lista.forEach((receta) => {
-        const card = document.createElement("div");
-        card.className = "recipe-card";
-        card.innerHTML = `
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "recipe-card";
+        tarjeta.innerHTML = `
         <img src="${receta.imagen}" alt="${receta.nombre}" />
         <h3>${receta.nombre}</h3>
         <p><strong>Tiempo:</strong> ${receta.tiempo} min</p>
         <p>${receta.pasos}</p>
     `;
-        recipesContainer.appendChild(card);
+        contenedorRecetas.appendChild(tarjeta);
     });
 }
-
 
 // =============================================
 // FUNCIÓN: Filtrar recetas por ingrediente
 // =============================================
 function filtrarPorIngrediente(ingrediente) {
-    const lower = ingrediente.toLowerCase();
-
-    // TODO: Reemplazar .includes() con implementación manual de búsqueda de subcadenas (como KMP o recorrido carácter por carácter)
+    const minuscula = ingrediente.toLowerCase();
     return recetas.filter((receta) =>
-        receta.ingredientes.some((ing) => ing.toLowerCase().includes(lower))
+        receta.ingredientes.some((ing) =>
+            contieneSubcadena(ing.toLowerCase(), minuscula)
+        )
     );
 }
-
 
 // =============================================
 // FUNCIÓN: Actualizar historial y análisis
@@ -67,51 +124,63 @@ function actualizarHistorial(ingrediente) {
     actualizarSugerenciasRecientes();
 }
 
-
 // =============================================
-// FUNCIÓN: Mostrar top ingredientes populares recientes (Sliding Window real)
+// FUNCIÓN: Mostrar top ingredientes populares recientes
 // =============================================
-
-// TODO: Sliding Window sobre últimas 5 búsquedas para encontrar ingredientes más frecuentes
 function actualizarSugerenciasRecientes() {
+    const ultimasBusquedas = historialIngredientes.slice(-5); // últimas 5 búsquedas
+    const frecuencia       = {};
+    ultimasBusquedas.forEach((ing) => {
+        frecuencia[ing] = (frecuencia[ing] || 0) + 1;
+    });
 
+    // Ordenar por frecuencia descendente y quedarnos con los top 3
+    const masPopulares = Object.entries(frecuencia)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map((entrada) => entrada[0]);
+
+    const ul = document.getElementById("recent-suggestions");
+    ul.innerHTML = "";
+    masPopulares.forEach((ing) => {
+        const li = document.createElement("li");
+        li.textContent = ing;
+        ul.appendChild(li);
+    });
 }
-
-
 
 // =============================================
 // FUNCIÓN: Mostrar sugerencias de autocompletado
 // =============================================
 function autocompletar(valor) {
-    const autocompletarDiv = document.getElementById("autocomplete-list");
-    autocompletarDiv.innerHTML = "";
+    const divAuto = document.getElementById("autocomplete-list");
+    divAuto.innerHTML = "";
 
     if (!valor) return;
 
-    currentSuggestions = [...new Set(recetas.flatMap(r => r.ingredientes))]
+    sugerenciasActuales = [...new Set(recetas.flatMap(r => r.ingredientes))]
         .filter((ing) => ing.toLowerCase().startsWith(valor.toLowerCase()))
         .slice(0, 5);
 
-    currentSuggestionIndex = -1;
+    indiceSugerenciaActual = -1;
 
-    currentSuggestions.forEach((sug) => {
+    sugerenciasActuales.forEach((sug) => {
         const item = document.createElement("div");
         item.textContent = sug;
         item.classList.add("autocomplete-item");
         item.onclick = () => {
-            input.value = sug;
-            input.focus();
+            entradaIngrediente.value = sug;
+            entradaIngrediente.focus();
         };
-        autocompletarDiv.appendChild(item);
+        divAuto.appendChild(item);
     });
 }
-
 
 // =============================================
 // FUNCIÓN: Buscar recetas y mostrarlas
 // =============================================
 function buscarYRenderizar() {
-    const valor = input.value.trim();
+    const valor = entradaIngrediente.value.trim();
     if (!valor) return;
 
     const resultados = filtrarPorIngrediente(valor);
@@ -119,93 +188,64 @@ function buscarYRenderizar() {
     renderRecetas(resultados);
 }
 
-
 // =============================================
 // FUNCIÓN: Ordenar recetas por nombre o tiempo
 // =============================================
 function ordenarRecetas(tipo) {
-    let ordenadas = [...recetas];
+    let recetasOrdenadas;
 
     if (tipo === "time") {
-        // TODO: Reemplazar .sort() por una implementación manual de Merge Sort (crear función mergeSort())
-        ordenadas.sort((a, b) => a.tiempo - b.tiempo);
+        recetasOrdenadas = ordenarMezcla(recetas, (a, b) => a.tiempo - b.tiempo);
     } else {
-        // TODO: Reemplazar .sort() por una implementación manual de ordenamiento alfabético (merge sort)
-        ordenadas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        recetasOrdenadas = ordenarMezcla(recetas, (a, b) => a.nombre.localeCompare(b.nombre));
     }
 
-    renderRecetas(ordenadas);
+    renderRecetas(recetasOrdenadas);
 }
-
 
 // =============================================
 // FUNCIÓN: Resaltar sugerencia seleccionada
 // =============================================
-function highlightSuggestion(items) {
-    items.forEach((item, index) => {
-        item.classList.toggle("active", index === currentSuggestionIndex);
+function resaltarSugerencia(items) {
+    items.forEach((item, idx) => {
+        item.classList.toggle("active", idx === indiceSugerenciaActual);
     });
 }
 
-
 // =============================================
-// EVENTO: Cuando el usuario escribe en el input
+// EVENTOS
 // =============================================
-input.addEventListener("input", (e) => {
-    const value = e.target.value.trim();
-    autocompletar(value); // Solo muestra sugerencias
-
-    if (!value) {
-        renderRecetas(recetas); // Si está vacío, mostrar todas
-    }
+entradaIngrediente.addEventListener("input", (e) => {
+    const valor = e.target.value.trim();
+    autocompletar(valor);
+    if (!valor) renderRecetas(recetas);
 });
 
-
-// =============================================
-// EVENTO: Teclado para navegar sugerencias
-// =============================================
-input.addEventListener("keydown", (e) => {
+entradaIngrediente.addEventListener("keydown", (e) => {
     const items = document.querySelectorAll(".autocomplete-item");
-
     if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (currentSuggestionIndex < items.length - 1) {
-            currentSuggestionIndex++;
-            highlightSuggestion(items);
-        }
+        if (indiceSugerenciaActual < items.length - 1) indiceSugerenciaActual++;
+        resaltarSugerencia(items);
     } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (currentSuggestionIndex > 0) {
-            currentSuggestionIndex--;
-            highlightSuggestion(items);
-        }
+        if (indiceSugerenciaActual > 0) indiceSugerenciaActual--;
+        resaltarSugerencia(items);
     } else if (e.key === "Enter") {
-        if (currentSuggestionIndex >= 0 && items[currentSuggestionIndex]) {
-            input.value = items[currentSuggestionIndex].textContent;
+        if (indiceSugerenciaActual >= 0 && items[indiceSugerenciaActual]) {
+            entradaIngrediente.value = items[indiceSugerenciaActual].textContent;
             document.getElementById("autocomplete-list").innerHTML = "";
         }
-        buscarYRenderizar(); // Ejecuta búsqueda
+        buscarYRenderizar();
     }
 });
 
+seleccionOrden.addEventListener("change", (e) => ordenarRecetas(e.target.value));
 
-// =============================================
-// EVENTO: Cambiar tipo de ordenamiento
-// =============================================
-sortSelect.addEventListener("change", (e) => ordenarRecetas(e.target.value));
-
-
-// =============================================
-// EVENTO: Mostrar la receta más rápida
-// =============================================
-suggestionBtn.addEventListener("click", () => {
-    // TODO: Reemplazar .reduce() con una implementación manual de Greedy para encontrar el menor tiempo
-    const recetaMasRapida = recetas.reduce((a, b) => a.tiempo < b.tiempo ? a : b);
+botonSugerencia.addEventListener("click", () => {
+    const recetaMasRapida = encontrarRecetaMasRapida(recetas);
     renderRecetas([recetaMasRapida]);
 });
 
-
-// =============================================
 // Render inicial de todas las recetas
-// =============================================
 renderRecetas(recetas);
