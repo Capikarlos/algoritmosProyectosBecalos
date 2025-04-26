@@ -30,7 +30,7 @@ function renderRecetas(lista) {
         <h3>${receta.nombre}</h3>
         <p><strong>Tiempo:</strong> ${receta.tiempo} min</p>
         <p>${receta.pasos}</p>
-      `;
+    `;
         recipesContainer.appendChild(card);
     });
 }
